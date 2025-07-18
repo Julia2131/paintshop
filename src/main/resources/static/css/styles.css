@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+}
+.navbar {
+    background-color: #004aad;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.navbar .logo {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+.navbar .nav-links {
+    list-style: none;
+    float: right;
+}
+.navbar .nav-links li {
+    display: inline-block;
+    margin-left: 20px;
+}
+.navbar .nav-links a, .navbar .nav-links .btn-logout {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+}
+.btn-logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font: inherit;
+}
+.icon-cart::before { content: '\1F6D2'; /* 🛒 */ }
+.icon-login::before { content: '\1F511'; /* 🔑 */ }
+.icon-register::before { content: '\270D'; /* ✍ */ }
+.footer {
+    background-color: #222;
+    color: #ccc;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+.footer-links li {
+    display: inline;
+    margin-right: 15px;
+}
+.footer-links a {
+    color: #ccc;
+    text-decoration: none;
+}
+.footer p {
+    margin: 0;
+}

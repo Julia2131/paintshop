@@ -1,4 +1,7 @@
 package com.example.paintmanagement.repository;
 
-public class OrderItemRepository {
+import com.example.paintmanagement.entity.OrderItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 }

@@ -1,4 +1,8 @@
 package com.example.paintmanagement.service;
 
-public class RoleService {
+import com.example.paintmanagement.entity.*;
+import java.util.Optional;
+
+public interface RoleService {
+    Optional<Role> findByName(String name);
 }
