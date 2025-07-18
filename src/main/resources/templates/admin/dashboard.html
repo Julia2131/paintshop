@@ -6,29 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<!--<nav class="navbar">-->
-<!--    <div class="container">-->
-<!--        <a class="logo" th:href="@{/admin/dashboard}">Admin Panel</a>-->
-<!--        <ul class="nav-links">-->
-<!--            <li><a th:href="@{/admin/categories}">Categories</a></li>-->
-<!--            <li><a th:href="@{/admin/products}">Products</a></li>-->
-<!--            <li><form th:action="@{/logout}" method="post"><button class="btn-logout">Logout</button></form></li>-->
-<!--        </ul>-->
-<!--    </div>-->
-<!--</nav>-->
-<!--<div class="container">-->
-<!--    <h2>Dashboard Overview</h2>-->
-<!--    <div class="dashboard-cards">-->
-<!--        <div class="card">-->
-<!--            <h3 th:text="${categoriesCount}">0</h3>-->
-<!--            <p>Categories</p>-->
-<!--        </div>-->
-<!--        <div class="card">-->
-<!--            <h3 th:text="${productsCount}">0</h3>-->
-<!--            <p>Products</p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+
     <div th:replace="fragments/admin-header :: header"></div>
     <div class="container mt-4">
         <h2 class="mb-4">Dashboard Overview</h2>
