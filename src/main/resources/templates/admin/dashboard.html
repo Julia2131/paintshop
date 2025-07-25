@@ -3,32 +3,178 @@
 <head>
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            color: #2c3e50;
+        }
+        .card-text {
+            color: #7f8c8d;
+        }
+        .stats-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .revenue-chart-container {
+            height: 450px; /* Tăng chiều cao cho biểu đồ thứ 3 */
+            width: 100%; /* Đảm bảo chiều rộng lấp đầy container */
+        }
+    </style>
 </head>
 <body>
 
     <div th:replace="fragments/admin-header :: header"></div>
     <div class="container mt-4">
-        <h2 class="mb-4">Dashboard Overview</h2>
+        <h2 class="mb-4">Bảng Điều Khiển</h2>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 mb-4">
+                <div class="card stats-card text-center">
+                    <i class="bi bi-grid fs-2 text-success"></i>
+                    <h5 class="card-title" th:text="${categoriesCount}">0</h5>
+                    <p class="card-text">Danh mục tranh</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card stats-card text-center">
+                    <i class="bi bi-palette fs-2 text-info"></i>
+                    <h5 class="card-title" th:text="${productsCount}">0</h5>
+                    <p class="card-text">Tổng số tranh</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ trạng thái tranh -->
+    <div class="container">
+        <div class="row">
+            <!-- Biểu đồ tỷ lệ trạng thái tranh -->
+            <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title" th:text="${categoriesCount}">0</h5>
-                        <p class="card-text">Categories</p>
+                    <div class="card-body">
+                        <h5 class="card-title">Tỷ lệ trạng thái tranh</h5>
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <!-- Biểu đồ xu hướng đơn hàng -->
+            <div class="col-md-6 mb-4">
                 <div class="card">
-                    <div class="card-body text-center">
-                        <h5 class="card-title" th:text="${productsCount}">0</h5>
-                        <p class="card-text">Products</p>
+                    <div class="card-body">
+                        <h5 class="card-title">Xu hướng đơn hàng (Tháng 7/2025)</h5>
+                        <div class="chart-container">
+                            <canvas id="orderTrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Biểu đồ doanh thu theo tháng -->
+            <div class="col-md-12 mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Doanh thu theo tháng (VNĐ)</h5>
+                        <div class="chart-container revenue-chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Biểu đồ trạng thái tranh (Pie Chart)
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctxStatus, {
+            type: 'pie',
+            data: {
+                labels: ['Đã bán', 'Hết hàng', 'Nháp'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: ['#28a745', '#ffc107', '#6c757d']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Tỷ lệ trạng thái' }
+                }
+            }
+        });
+
+        // Biểu đồ doanh thu theo tháng (Bar Chart)
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        new Chart(ctxRevenue, {
+            type: 'bar',
+            data: {
+                labels: ['Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10'],
+                datasets: [{
+                    label: 'Doanh thu (VNĐ)',
+                    data: [6500000, 8500000, 12000000, 4240000, 9830000, 13840000, 6288700, 8523400, 19820000],
+                    backgroundColor: '#007bff'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'VNĐ' } }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Doanh thu 2025' }
+                }
+            }
+        });
+
+        // Biểu đồ xu hướng đơn hàng (Line Chart)
+        const ctxOrderTrend = document.getElementById('orderTrendChart').getContext('2d');
+        new Chart(ctxOrderTrend, {
+            type: 'line',
+            data: {
+                labels: ['Tuần 1', 'Tuần 2', 'Tuần 3', 'Tuần 4'],
+                datasets: [{
+                    label: 'Số đơn hàng',
+                    data: [35, 72, 50, 80],
+                    borderColor: '#dc3545',
+                    backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Số lượng' } }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    title: { display: true, text: 'Xu hướng đơn hàng (Tháng 7/2025)' }
+                }
+            }
+        });
+    </script>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>

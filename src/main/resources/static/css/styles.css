@@ -42,6 +42,91 @@ body {
 .icon-cart::before { content: '\1F6D2'; /* 🛒 */ }
 .icon-login::before { content: '\1F511'; /* 🔑 */ }
 .icon-register::before { content: '\270D'; /* ✍ */ }
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #ff6f61, #ffb88c);
+}
+
+.hero-section .btn-primary {
+    background: #fff;
+    color: #ff6f61;
+    border: none;
+    padding: 12px 24px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.hero-section .btn-primary:hover {
+    background: #ff6f61;
+    color: #fff;
+}
+
+.carousel-item {
+    height: 500px; /* Chiều cao đồng nhất */
+}
+
+.carousel-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Ảnh không bị méo, lấp đầy toàn bộ khung */
+}
+
+.carousel-caption {
+    top: 80%;
+    transform: translateY(-50%);
+    bottom: initial;
+    background-color: rgba(0, 0, 0, 0.5); /* Nền đen mờ */
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.carousel-caption h5,
+.carousel-caption p {
+    color: white;
+}
+
+/* Features Section */
+.feature-card {
+    background: #fff;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Product Showcase */
+.product-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+}
+
+.product-card .btn-primary {
+    background: #ff6f61;
+    border: none;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+.product-card .btn-primary:hover {
+    background: #e65b50;
+}
+
 .footer {
     background-color: #222;
     color: #ccc;

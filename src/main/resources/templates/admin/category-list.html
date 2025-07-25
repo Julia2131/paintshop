@@ -7,19 +7,19 @@
 <body>
 <div th:replace="fragments/admin-header :: header"></div>
 <div class="container mt-4">
-    <h2 class="mb-4">Categories</h2>
+    <h1 class="mb-4">Danh mục sản phẩm</h1>
     <form th:action="@{/admin/categories/search}" method="get" class="d-flex mb-3">
-        <input type="text" name="keyword" th:value="${keyword}" class="form-control me-2" placeholder="Search by name..." />
-        <button type="submit" class="btn btn-primary">Search</button>
-        <a th:href="@{/admin/categories}" class="btn btn-secondary ms-2">Reset</a>
+        <input type="text" name="keyword" th:value="${keyword}" class="form-control me-2" placeholder="Tìm kiếm danh mục..." />
+        <button type="submit" class="btn btn-primary w-25">Tìm kiếm</button>
+        <a th:href="@{/admin/categories}" class="btn btn-secondary ms-2 w-25">Đặt lại</a>
     </form>
-    <a th:href="@{/admin/categories/add}" class="btn btn-success mb-3">Add New</a>
+    <a th:href="@{/admin/categories/add}" class="btn btn-success mb-3">Thêm mới danh mục</a>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Action</th>
+            <th>Tên danh mục</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -27,13 +27,16 @@
             <td th:text="${c.id}"></td>
             <td th:text="${c.name}"></td>
             <td>
-                <a th:href="@{/admin/categories/edit/{id}(id=${c.id})}" class="btn btn-primary btn-sm">Edit</a>
-                <a th:href="@{/admin/categories/delete/{id}(id=${c.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?');">Delete</a>
+                <a th:href="@{/admin/categories/edit/{id}(id=${c.id})}" class="btn btn-primary btn-sm">Sửa</a>
+                <a th:href="@{/admin/categories/delete/{id}(id=${c.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc muốn xóa?');">Xóa</a>
             </td>
         </tr>
         </tbody>
     </table>
-    <a th:href="@{/admin/dashboard}" class="btn btn-link mt-3">Back</a>
+    <a th:href="@{/admin/dashboard}" class="btn btn-info mt-3 ">Quay lại</a>
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+
 </html>

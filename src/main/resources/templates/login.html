@@ -11,27 +11,31 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h2 class="my-4 text-center">Login</h2>
+            <h2 class="my-4 text-center">Đăng nhập</h2>
             <form th:action="@{/login}" method="post">
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email:</label>
                     <input type="email" name="username" id="inputEmail" class="form-control" placeholder="Email address" required autofocus />
                 </div>
                 <div class="mb-3">
-                    <label for="inputPassword" class="form-label">Password:</label>
+                    <label for="inputPassword" class="form-label">Mật khẩu:</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required />
                 </div>
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                    <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
                 </div>
-                <div th:if="${param.error}" class="alert alert-danger">Invalid credentials</div>
-                <div th:if="${param.logout}" class="alert alert-info">You have been logged out</div>
+                <div th:if="${param.error}" class="alert alert-danger">Tài khoản không hợp lệ</div>
+                <div th:if="${param.logout}" class="alert alert-info">Bạn đã đăng xuất tài khoản</div>
             </form>
-            <p class="text-center"><a th:href="@{/register}" class="btn btn-link">Register</a></p>
+            <p class="text-center"><a th:href="@{/register}" class="btn btn-link">Đăng ký</a></p>
         </div>
     </div>
 </div>
 <th:block th:replace="fragments/footer :: footer" />
 
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+
 </html>
