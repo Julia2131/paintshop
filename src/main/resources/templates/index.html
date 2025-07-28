@@ -107,9 +107,8 @@
   <div class="container">
     <h2 class="text-center mb-5 fw-bold" style="color: #fff;">Tranh Bán Chạy Nhất</h2>
     <div class="row g-4">
-      <div class="col-md-4" th:each="product : ${products}">
+      <div class="col-md-4" th:each="product, iterStat : ${products}" th:if="${iterStat.index < 3}">
         <div class="card product-card shadow-lg">
-
           <img src="/images/img2.jpg" class="card-img-top" alt="Product Image">
           <div class="card-body">
             <h5 class="card-title fw-bold" th:text="${product.title}" style="color: #ff6f61;">Tên Tranh</h5>

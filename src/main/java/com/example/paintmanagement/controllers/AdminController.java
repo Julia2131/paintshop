@@ -75,12 +75,6 @@ public class AdminController {
     }
 
     // ==== PRODUCT CRUD ====
-//    @GetMapping("/products")
-//    public String productManagement(Model model) {
-//        List<Product> products = productService.findAll();
-//        model.addAttribute("products", products);
-//        return "admin/products"; // templates/admin/products.html
-//    }
     @GetMapping("/products")
     public String viewProducts(@RequestParam(value = "keyword", required = false) String keyword,
                                Model model) {
