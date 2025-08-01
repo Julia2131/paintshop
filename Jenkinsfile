@@ -11,7 +11,7 @@ pipeline {
         VERSION = "${version}"  // Phiên bản image
         SONAR_PROJECT_KEY = 'sonar-token'  // Thay hợp lý nếu cần
         SONAR_ENV = 'SonarQube'
-        DB_URL = 'jdbc:mysql://localhost:3306/paintdb'
+        DB_URL = 'jdbc:mysql://localhost:3306/paintshop'
         DB_USERNAME = 'root'
         DB_PASSWORD = '1234'
     }
