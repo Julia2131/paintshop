@@ -2,7 +2,6 @@ def version = "v0.${BUILD_NUMBER}"
 
 pipeline {
     agent any
-
     environment {
         GITHUB_USERNAME = 'Julia2131'
         GITHUB_CREDENTIAL = credentials('token-github') // Credential ID trong Jenkins cho GitHub
@@ -18,7 +17,7 @@ pipeline {
         stage('Checkout Source') {
             steps {
                 echo 'Checkout source from GitHub'
-                git url: 'https://github.com/baonhi12/paintshop.git', branch: 'main', credentialsId: 'github-user-login'
+                git url: 'https://github.com/baonhi12/paintshop.git', branch: 'main', credentialsId: 'token-github'
             }
         }
 
