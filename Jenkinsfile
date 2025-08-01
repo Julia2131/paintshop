@@ -30,7 +30,7 @@ pipeline {
                         if (isUnix()) {
                             sh 'mvn clean verify sonar:sonar'
                         } else {
-                            bat "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=paintshop -Dsonar.projectName='paintshop'"
+                            bat 'mvn clean verify sonar:sonar -Dsonar.projectKey=paintshop -Dsonar.projectName='paintshop''
                         }
                     }
                     echo 'SonarQube Analysis completed'
