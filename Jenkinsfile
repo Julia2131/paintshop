@@ -6,7 +6,7 @@ pipeline {
     environment {
         GITHUB_USERNAME = 'Julia2131'
         GITHUB_CREDENTIAL = credentials('token-github') // Credential ID trong Jenkins cho GitHub
-        DOCKERHUB_CREDENTIAL = credentials('dockerhub-creds') // Credentials cho DockerHub
+        DOCKERHUB_CREDENTIAL = credentials('dockerhub-token') // Credentials cho DockerHub
         IMAGE_NAME = "${DOCKERHUB_CREDENTIAL_USR}/paintshop"
         REGISTRY_URL = 'docker.io'
         VERSION = "${version}"  // Phiên bản image
