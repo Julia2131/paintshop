@@ -25,7 +25,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 script {
-                    def mvn = tool 'Default Maven';
+
                     withSonarQubeEnv("${SONAR_ENV}") {
                         if (isUnix()) {
                             sh 'mvn clean verify sonar:sonar'
