@@ -11,6 +11,9 @@ pipeline {
         VERSION = "${version}"  // Phiên bản image
         SONAR_PROJECT_KEY = 'sonar-token'  // Thay hợp lý nếu cần
         SONAR_ENV = 'SonarQube'
+        DB_URL = 'jdbc:mysql://localhost:3306/paintdb'
+        DB_USERNAME = 'root'
+        DB_PASSWORD = '1234'
     }
 
     stages {
@@ -56,7 +59,7 @@ pipeline {
             steps {
                 echo 'Building Docker image'
                 script {
-                    withDockerRegistry(credentialsId: 'dockerhub-creds', url: 'https://index.docker.io/v1/') {
+                    withDockerRegistry(credentialsId: 'dockerhub-token', url: 'https://index.docker.io/v1/') {
                         if (isUnix()) {
                             sh "mvn clean package"
                             sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
