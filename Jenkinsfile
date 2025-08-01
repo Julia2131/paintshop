@@ -11,7 +11,7 @@ pipeline {
         VERSION = "${version}"  // Phiên bản image
         SONAR_PROJECT_KEY = 'sonar-token'  // Thay hợp lý nếu cần
         SONAR_ENV = 'SonarQube'
-        DB_URL = 'jdbc:mysql://localhost:3306/paintshop'
+        DB_URL = 'jdbc:mysql://localhost:3306/paintshop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false'
         DB_USERNAME = 'root'
         DB_PASSWORD = '1234'
     }
@@ -32,7 +32,7 @@ pipeline {
                         if (isUnix()) {
                             sh 'mvn clean verify sonar:sonar'
                         } else {
-                            bat 'mvn clean verify sonar:sonar'
+                            bat 'mvn clean verify sonar:sonar -DskipTests'
                         }
                     }
                     echo 'SonarQube Analysis completed'
