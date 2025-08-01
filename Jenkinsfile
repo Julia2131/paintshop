@@ -9,7 +9,7 @@ pipeline {
         IMAGE_NAME = "${DOCKERHUB_CREDENTIAL_USR}/paintshop"
         REGISTRY_URL = 'docker.io'
         VERSION = "${version}"
-        SONAR_PROJECT_KEY = 'paintshop'  // Sửa: này là project key, không phải token
+        SONAR_PROJECT_KEY = 'paintshop'
         SONAR_ENV = 'SonarQube'
         DB_URL = 'jdbc:mysql://localhost:3306/paintshop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false'
         DB_USERNAME = 'root'
@@ -32,7 +32,6 @@ pipeline {
                             if (isUnix()) {
                                 sh 'mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=paintshop -Dsonar.projectName=paintshop'
                             } else {
-                                // Sửa lỗi quote trong bat command
                                 bat 'mvn clean verify sonar:sonar -DskipTests -Dsonar.projectKey=paintshop -Dsonar.projectName=paintshop'
                             }
                         }
@@ -40,7 +39,6 @@ pipeline {
                     } catch (Exception e) {
                         echo "SonarQube failed: ${e.getMessage()}"
                         echo 'Continuing pipeline without SonarQube...'
-                        // Không throw error để tiếp tục pipeline
                     }
                 }
             }
@@ -54,7 +52,6 @@ pipeline {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
                                 echo "⚠️ Quality Gate failed: ${qg.status}"
-                                // Không error() để không dừng pipeline
                             } else {
                                 echo '✅ Quality Gate passed.'
                             }
@@ -71,15 +68,20 @@ pipeline {
             steps {
                 echo 'Building Docker image'
                 script {
-                    withDockerRegistry(credentialsId: 'dockerhub-token', url: 'https://index.docker.io/v1/') {
+                    // Login to DockerHub using credentials
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-token', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         if (isUnix()) {
-                            sh "mvn clean package -DskipTests"  // Thêm -DskipTests để tránh lỗi DB
+                            sh "mvn clean package -DskipTests"
+                            sh "echo \$DOCKER_PASS | docker login -u \$DOCKER_USER --password-stdin"
                             sh "docker build -t ${IMAGE_NAME}:${VERSION} ."
                             sh "docker push ${IMAGE_NAME}:${VERSION}"
+                            sh "docker logout"
                         } else {
-                            bat "mvn clean package -DskipTests"  // Thêm -DskipTests
+                            bat "mvn clean package -DskipTests"
+                            bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
                             bat "docker build -t ${IMAGE_NAME}:${VERSION} ."
                             bat "docker push ${IMAGE_NAME}:${VERSION}"
+                            bat "docker logout"
                         }
                     }
                 }
@@ -90,7 +92,6 @@ pipeline {
             steps {
                 echo 'Deploying application using docker-compose'
                 script {
-                    // Cập nhật IMAGE_TAG trong docker-compose
                     if (isUnix()) {
                         sh "export IMAGE_TAG=${VERSION} && docker-compose -f deploy/docker-compose.yml pull"
                         sh "export IMAGE_TAG=${VERSION} && docker-compose -f deploy/docker-compose.yml up -d"
