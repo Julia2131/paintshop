@@ -8,7 +8,7 @@ pipeline {
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-token')
         IMAGE_NAME = "${DOCKERHUB_CREDENTIAL_USR}/paintshop"
         REGISTRY_URL = 'docker.io'
-        VERSION = "${version.trim()}"
+        VERSION = "${version}"
         SONAR_PROJECT_KEY = 'paintshop'
         SONAR_ENV = 'SonarQube'
         DB_URL = 'jdbc:mysql://localhost:3306/paintshop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false'
@@ -101,12 +101,13 @@ pipeline {
             steps {
                 echo 'Deploying application using docker-compose'
                 script {
+                def imageTag = "${version}".replaceAll("\\s", "")
                     if (isUnix()) {
                         sh "export IMAGE_TAG=\$(echo "${VERSION}" | tr -d ' ') && docker-compose -f docker-compose.yml pull"
                         sh "export IMAGE_TAG=\$(echo "${VERSION}" | tr -d ' ') && docker-compose -f docker-compose.yml up -d"
                     } else {
-                        bat "set IMAGE_TAG=${VERSION.trim()} && docker-compose -f docker-compose.yml pull"
-                        bat "set IMAGE_TAG=${VERSION.trim()} && docker-compose -f docker-compose.yml up -d"
+                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml pull"
+                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml up -d"
                     }
                 }
             }
