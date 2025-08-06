@@ -1,46 +1,32 @@
-version: '3.8'
-
 services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: paintshop
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 1234
+#    ports:
+#      - "3307:3306"  # ⚠️ Đổi port ngoài thành 3307 để tránh xung đột
+    volumes:
+      - mysql_data:/var/lib/mysql
+
   app:
-    container_name: dotnet_app
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "5000:80"
-    networks:
-      - backend-network
+    container_name: paintshop-app
     depends_on:
-      - sonarqube
-
-  sonarqube:
-    image: sonarqube:community
-    container_name: sonarqube
+      - mysql
     ports:
-      - "9000:9000"
+      - "8050:8050"
     environment:
-      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
-    networks:
-      - backend-network
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paintshopdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    restart: on-failure
 
-  prometheus:
-    image: prom/prometheus
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - backend-network
-
-  grafana:
-    image: grafana/grafana
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    networks:
-      - backend-network
-
-networks:
-  backend-network:
-    driver: bridge
+volumes:
+  mysql_data:
