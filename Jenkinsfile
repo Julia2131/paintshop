@@ -8,7 +8,7 @@ pipeline {
         DOCKERHUB_CREDENTIAL = credentials('dockerhub-token')
         IMAGE_NAME = "${DOCKERHUB_CREDENTIAL_USR}/paintshop"
         REGISTRY_URL = 'docker.io'
-        VERSION = "${version}"
+        VERSION = "${version.trim()}"
         SONAR_PROJECT_KEY = 'paintshop'
         SONAR_ENV = 'SonarQube'
         DB_URL = 'jdbc:mysql://localhost:3306/paintshop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false'
