@@ -1,32 +1,64 @@
+version: "3.8"
 services:
-  mysql:
+  db:
     image: mysql:8.0
-    container_name: mysql-db
-    restart: always
+    container_name: paintshop-db
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: paintshop
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 1234
-#    ports:
-#      - "3307:3306"  # ⚠️ Đổi port ngoài thành 3307 để tránh xung đột
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: root
+    ports:
+      - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: laika23123/paintshop:${IMAGE_TAG:-latest}
     container_name: paintshop-app
+    restart: unless-stopped
     depends_on:
-      - mysql
-    ports:
-      - "8050:8050"
+      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paintshopdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/paintshop?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: 1234
-    restart: on-failure
+    ports:
+      - "8080:8080"
 
 volumes:
-  mysql_data:
+  db_data:
+
+
+
+#services:
+#  db:
+#    image: mysql:8.0
+#    container_name: mysql-db
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#      MYSQL_DATABASE: paintshop
+#      MYSQL_USER: root
+#      MYSQL_PASSWORD: 1234
+##    ports:
+##      - "3307:3306"  # ⚠️ Đổi port ngoài thành 3307 để tránh xung đột
+#    volumes:
+#      - mysql_data:/var/lib/mysql
+#
+#  app:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: paintshop-app
+#    depends_on:
+#      - mysql
+#    ports:
+#      - "8050:8050"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/paintshopdb
+#      SPRING_DATASOURCE_USERNAME: root
+#      SPRING_DATASOURCE_PASSWORD: 1234
+#    restart: on-failure
+#
+#volumes:
+#  mysql_data:
