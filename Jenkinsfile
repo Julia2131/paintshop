@@ -101,13 +101,18 @@ pipeline {
             steps {
                 echo 'Deploying application using docker-compose'
                 script {
-                def imageTag = "${version}".replaceAll("\\s", "")
+                def cleanTag = VERSION.trim()
                     if (isUnix()) {
-                        sh "export IMAGE_TAG=\$(echo "${VERSION}" | tr -d ' ') && docker-compose -f docker-compose.yml pull"
-                        sh "export IMAGE_TAG=\$(echo "${VERSION}" | tr -d ' ') && docker-compose -f docker-compose.yml up -d"
+                        sh """
+                            export IMAGE_TAG=${cleanTag}
+                            docker-compose -f docker-compose.yml pull
+                            docker-compose -f docker-compose.yml up -d
+                        """
                     } else {
-                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml pull"
-                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml up -d"
+                        bat """
+                            set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml pull
+                            set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml up -d
+                        """
                     }
                 }
             }
