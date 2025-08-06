@@ -109,10 +109,18 @@ pipeline {
                             docker-compose -f docker-compose.yml up -d
                         """
                     } else {
-                        bat """
-                            set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml pull
-                            set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml up -d
-                        """
+//                         bat """
+//                             set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml pull
+//                             set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml up -d
+//                         """
+bat """
+    REM --- đặt biến KHÔNG mang theo khoảng trắng/CR ---
+    set "IMAGE_TAG=${cleanTag}"
+
+    REM --- kéo và chạy ---
+    docker-compose pull
+    docker-compose up -d
+"""
                     }
                 }
             }
