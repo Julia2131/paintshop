@@ -109,22 +109,45 @@ pipeline {
                             docker-compose -f docker-compose.yml up -d
                         """
                     } else {
-//                         bat """
-//                             set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml pull
-//                             set IMAGE_TAG=${cleanTag} && docker-compose -f docker-compose.yml up -d
-//                         """
-bat """
-    REM --- đặt biến KHÔNG mang theo khoảng trắng/CR ---
-    set "IMAGE_TAG=${cleanTag}"
+                        bat """
+                        REM --- đặt biến KHÔNG mang theo khoảng trắng/CR ---
+                        set "IMAGE_TAG=${cleanTag}"
 
-    REM --- kéo và chạy ---
-    docker-compose pull
-    docker-compose up -d
-"""
+                        REM --- kéo và chạy ---
+                        docker-compose pull
+                        docker-compose up -d
+                        """
                     }
                 }
             }
         }
+        stage('Deploy with Monitoring') {
+            steps {
+                echo 'Deploying application with monitoring stack'
+                script {
+                    def cleanTag = VERSION.trim()
+                    bat """
+                        set "IMAGE_TAG=${cleanTag}"
+
+                        REM Deploy monitoring stack
+                        docker-compose up -d
+
+                        REM Wait for services to be ready
+                        timeout /t 60 /nobreak
+
+                        REM Health checks
+                        curl -f http://localhost:8080/actuator/health
+                        curl -f http://localhost:9090/-/healthy
+                        curl -f http://localhost:3000/api/health
+
+                        REM Verify metrics collection
+                        timeout /t 30 /nobreak
+                        curl -f http://localhost:9090/api/v1/targets | findstr "paintshop-app.*up"
+                    """
+                }
+            }
+        }
+
     }
 
     post {
@@ -139,73 +162,3 @@ bat """
         }
     }
 }
-// pipeline {
-//     agent any
-//
-//     environment {
-//
-//     }
-//
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 echo '📥 Checkout source code...'
-//                 checkout scm
-//             }
-//         }
-//
-//         stage('Restore') {
-//             steps {
-//                 echo '🔧 Restoring dependencies...'
-//                 bat 'dotnet restore'
-//             }
-//         }
-//
-//         stage('Build') {
-//             steps {
-//                 echo '🏗 Building project...'
-//                 bat 'dotnet build --configuration Release'
-//             }
-//         }
-//
-//         stage('Publish') {
-//             steps {
-//                 echo '📦 Publishing app...'
-//                 bat 'dotnet publish -c Release -o published'
-//             }
-//         }
-//
-//         stage('Archive Artifact') {
-//             steps {
-//                 echo '🗃 Archiving published output...'
-//                 archiveArtifacts artifacts: 'published/**', fingerprint: true
-//             }
-//         }
-//
-//         stage('Deploy to Server') {
-//             steps {
-//                 echo '🚀 Deploying to production server via SSH...'
-//                 sshagent (credentials: ['my-ssh-key']) {
-//                     sh "ssh -p $DEPLOY_PORT $DEPLOY_USER@$DEPLOY_HOST 'bash $DEPLOY_SCRIPT'"
-//                 }
-//             }
-//         }
-//
-//         stage('Notify Webhook') {
-//             steps {
-//                 echo '📡 Sending webhook notification...'
-//                 sh "curl -X POST $WEBHOOK_URL -H 'Content-Type: application/json' -d '{\"status\": \"success\", \"job\": \"Paintshop CI/CD\"}'"
-//             }
-//         }
-//     }
-//
-//     post {
-//         failure {
-//             echo '❌ Build failed. Notifying webhook...'
-//             sh "curl -X POST $WEBHOOK_URL -H 'Content-Type: application/json' -d '{\"status\": \"failed\", \"job\": \"Paintshop CI/CD\"}'"
-//         }
-//     }
-// }
-//
-//
-// //tạo dockerfile và docker compose, xong push lên vào chạy jenkins

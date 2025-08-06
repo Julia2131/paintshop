@@ -1,7 +1,25 @@
 global:
   scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+# - "first_rules.yml"
+# - "second_rules.yml"
 
 scrape_configs:
-  - job_name: 'dotnet_app'
+  # Prometheus itself
+  - job_name: 'prometheus'
     static_configs:
-      - targets: ['app:80']
+      - targets: ['localhost:9090']
+
+  # Spring Boot Application
+  - job_name: 'paintshop-app'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 10s
+    static_configs:
+      - targets: ['paintshop-app:8080']
+
+  # MySQL Exporter (optional)
+  - job_name: 'mysql'
+    static_configs:
+      - targets: ['mysql-exporter:9104']
