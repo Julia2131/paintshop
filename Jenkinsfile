@@ -102,11 +102,11 @@ pipeline {
                 echo 'Deploying application using docker-compose'
                 script {
                     if (isUnix()) {
-                        sh "export IMAGE_TAG=${VERSION} && docker-compose -f deploy/docker-compose.yml pull"
-                        sh "export IMAGE_TAG=${VERSION} && docker-compose -f deploy/docker-compose.yml up -d"
+                        sh "export IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml pull"
+                        sh "export IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml up -d"
                     } else {
-                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f deploy\\docker-compose.yml pull"
-                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f deploy\\docker-compose.yml up -d"
+                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml pull"
+                        bat "set IMAGE_TAG=${VERSION} && docker-compose -f docker-compose.yml up -d"
                     }
                 }
             }
