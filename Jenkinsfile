@@ -25,8 +25,11 @@ pipeline {
     stages {
         stage('Checkout Source') {
             steps {
-                echo 'Checkout source from GitHub'
-                git url: 'https://github.com/baonhi12/paintshop.git', branch: 'main', credentialsId: 'token-github'
+                echo 'Cleanup and checkout source from SCM'
+                script {
+                    deleteDir()  // Clean workspace trước
+                    checkout scm  // Sử dụng SCM tự động
+                }
             }
         }
 
