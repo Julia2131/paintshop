@@ -85,7 +85,7 @@ pipeline {
                         } else {
                             bat "mvn clean package -DskipTests"
                             bat "echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin"
-                            bat "docker build -t ${IMAGE_NAME}:${VERSION} ."
+                            bat "docker build -t ${IMAGE_NAME}:${VERSION} -f Dockerfile ."
                             bat "docker push ${IMAGE_NAME}:${VERSION}"
                             bat "docker logout"
                         }
